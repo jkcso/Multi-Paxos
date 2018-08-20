@@ -1,0 +1,44 @@
+
+# distributed algorithms, n.dulay, 2 feb 18
+# coursework 2 - paxos made moderately complex
+
+# docker-compose.yml v1  
+
+version: "3.4"
+
+x-common:
+  &defaults
+    image: elixir:alpine
+    volumes:
+      - .:/project
+    working_dir: /project
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
+
+services:
+  paxos.localdomain:
+    container_name: paxos
+    command: > 
+      elixir --name paxos@paxos.localdomain --cookie pass 
+             -S mix run --no-halt -e Paxos.main 1 docker 1 1 
+    <<: *defaults
+
+  server1.localdomain:
+    container_name: server1
+    command: > 
+      elixir --name server1@server1.localdomain --cookie pass 
+             -S mix run --no-halt 
+    <<: *defaults
+
+  client1.localdomain:
+    container_name: client1
+    command: > 
+      elixir --name client1@client1.localdomain --cookie pass 
+             -S mix run --no-halt 
+    <<: *defaults
+
+
