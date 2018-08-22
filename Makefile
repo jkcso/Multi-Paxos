@@ -1,8 +1,3 @@
-
-# distributed algorithms, n.dulay, 1 feb 18
-# coursework 2, paxos made moderately complex
-# Makefile, v2
-
 SERVERS = 3
 CLIENTS = 2
 
