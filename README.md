@@ -72,3 +72,6 @@ Source: https://www.beyondthelines.net/algorithm/multi-paxos/
 `make ssh_down	- kill nodes on real network (omitted)`
 
 `make ssh_show	- show running nodes on real network (omitted)`
+
+## Note
+Part of my work is intentionally broken or misleading to avoid disrespectful people from copying and pasting.
