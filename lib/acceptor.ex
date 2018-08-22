@@ -1,5 +1,3 @@
-# Joseph KATSIOLOUDES (jk2714), Ben Sheng TAN(bst15)
-
 defmodule Acceptor do
 
 def start(config) do
