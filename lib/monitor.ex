@@ -1,7 +1,3 @@
-
-# distributed algorithms, n.dulay 2 feb 18
-# coursework 2, paxos made moderately complex
-
 defmodule Monitor do
 
 def start config do
