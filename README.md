@@ -13,7 +13,7 @@ Paxos is usually used where durability is required (for example, to replicate a 
 
 Source: https://en.wikipedia.org/wiki/Paxos_(computer_science)
 
-## MultiPaxos
+## Multi-Paxos
 
 ### How to make sure the log is the same on all the nodes?  
 The solution is to run basic-Paxos (as explained above) for every log entry (plus add some tweaks to solve some issues and improve performance).  First we need to identify for which log entry we’re choosing a value. Our first tweak is therefore to add a log-entry number to every propose and accept messages.  And that leads directly to our first problem:
