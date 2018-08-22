@@ -16,7 +16,7 @@ Source: https://en.wikipedia.org/wiki/Paxos_(computer_science)
 ## MultiPaxos
 
 ### How to make sure the log is the same on all the nodes?  
-The solution is to run basic-Paxos for every log entry (plus add some tweaks to solve some issues and improve performance).  First we need to identify for which log entry we’re choosing a value. Our first tweak is therefore to add a log-entry number to every propose and accept messages.  And that leads directly to our first problem:
+The solution is to run basic-Paxos (as explained above) for every log entry (plus add some tweaks to solve some issues and improve performance).  First we need to identify for which log entry we’re choosing a value. Our first tweak is therefore to add a log-entry number to every propose and accept messages.  And that leads directly to our first problem:
 
 ### How to figure out which log entry to use?
 Simply each server keeps an index of smallest available log entry number (entry with no chosen value) and try to propose the new value for this slot. It keeps proposing the same value on increasing entry number until the value is chosen.  Servers can handle multiple client requests simultaneously (for different log entries). However updating the state machine is sequential (because all the preceding commands must be applied before applying a new one).  Now that the biggest problem is solved in theory, it may not work well in practice because of contention – several servers propose different values for the same log entry. Choosing a value requires at least 2-phases and possibly more in case multiple values are proposed.  The next tweak aims at improving the performance by resorbing the contention:
@@ -37,7 +37,7 @@ For that each server needs to track “chosen” entries. Each server marks the 
 
 The proposer (i.e. the leader) tells the other servers about its “firstUnchoosenIndex” in every “accept” request. The proposer is the only one to know when a value is chosen. Embedding its “firstUnchosenIndex” allows the acceptors to know which entries have already been chosen.  On the acceptor side when it receives an accept message, it checks if it has any past log entries older than the received “firstUnchosenIndex” with a proposal number matching the proposal number in the request. In this case it can mark these entries as accepted (i.e. set accepted proposal to infinity).
 
-Paxos learning chosen valuesStill might be some not chosen values from previous leader in the acceptor log entries.  To solve this problem acceptors include their firstUnchosenIndex in the accept replies. When the proposer receives a reply with firstUnchosenIndex older than its own firstUnchosenIndex it sends a “Success” message containing the log entry and the chosen value.
+Paxos learning chosen values.  Still might be some not chosen values from previous leader in the acceptor log entries.  To solve this problem acceptors include their firstUnchosenIndex in the accept replies. When the proposer receives a reply with firstUnchosenIndex older than its own firstUnchosenIndex it sends a “Success” message containing the log entry and the chosen value.
 
 It allows the acceptor to record the chosen value for this log entry. So it marks this log entry as chosen (acceptProposal = infinity) and update its firstUnchosenValue and it includes it in the response. (It allows the leader to send another Success message if needed).  Now our log is fully replicated (and so is the state machine). So let’s focus on the interaction with the client.
 
