@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# distributed algorithms, n.dulay 25 jan 18
-# coursework 2, create docker-compose.yml file
-
 MAIN=$1
 CONFIG=$2
 SETUP=$3
